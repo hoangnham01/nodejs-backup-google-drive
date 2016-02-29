@@ -1,0 +1,26 @@
+{
+  "domain": {
+    "your-domain.com": {
+      "client_secret": "configs/client_secret_816044688379-3scg1bg9rje5o8kbvuvmk7935sb152ni.apps.googleusercontent.com.json",
+      "path": ["/var/www/your-domain.com/public"],
+      "folderId" : "0B0SG3KPYAQzbUmw4S1FyMVM5Q1U",
+      "database": {
+        "name": "database_name",
+        "user": "root",
+        "password": "",
+        "max_file_backup": 5
+      }
+    },
+    "your-domain-2.com": {
+      "client_secret": "configs/client_secret.json",
+      "path": ["/var/www/your-domain.com/public/uploads/products","/var/www/your-domain.com/public/uploads/avatars"],
+      "folderId" : "0B0SG3KPYAQzbUmw4S1FyMVM5Q1U",
+      "database": {
+        "name": "database_name",
+        "user": "root",
+        "password": "",
+        "max_file_backup": 5
+      }
+    }
+  }
+}
