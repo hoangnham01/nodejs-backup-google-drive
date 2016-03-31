@@ -5,11 +5,11 @@ var exec       = require('child_process').exec;
 var moment     = require('moment');
 var nodemailer = require('nodemailer');
 
-process.env.TZ = 'Asia/Saigon';
 
 if (typeof process.argv[2] !== 'undefined') {
     var domain  = process.argv[2];
     var setting = JSON.parse(fs.readFileSync(__dirname + '/configs/setting.json', 'utf8'));
+    process.env.TZ = setting.timezone;
     var data    = setting.domain[domain];
     if (typeof data === 'object') {
         drive.setConfig(setting.domain[domain], domain);
@@ -99,18 +99,18 @@ if (typeof process.argv[2] !== 'undefined') {
         console.log('Domain not found.'.red);
     }
 }
-function getFiles(dir, files_) {
-    files_    = files_ || [];
+function getFiles(dir, _files) {
+    _files    = _files || [];
     var files = fs.readdirSync(dir);
     for (var i in files) {
         var name = dir + '/' + files[i];
         if (fs.statSync(name).isDirectory()) {
-            getFiles(name, files_);
+            getFiles(name, _files);
         } else {
-            files_.push(name);
+            _files.push(name);
         }
     }
-    return files_;
+    return _files;
 }
 function removeFile(file){
     fs.exists(file, function(exists) {

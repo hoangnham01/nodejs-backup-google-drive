@@ -16,8 +16,7 @@ var setConfig = function (config, domain) {
 };
 
 
-
-function run(callback) {
+function callDriver(callback) {
     if(!CLIENT_SECRET_PATH){
         console.log('CLIENT_SECRET_PATH not found'.red);
         return;
@@ -62,7 +61,7 @@ function authorize(credentials, callback) {
  * execute the given callback with the authorized OAuth2 client.
  *
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
+ * @param {function} callback The callback to call with the authorized
  *     client.
  */
 function getNewToken(oauth2Client, callback) {
@@ -111,7 +110,7 @@ function storeToken(token) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  * */
 var driverInfo = function () {
-    run(function(auth){
+    function dInfo(auth){
         var drive = google.drive({version: 'v2', auth: auth});
         drive.about.get({}, function (err, data) {
             console.log('****************** Drive Info ******************'.green);
@@ -127,17 +126,21 @@ var driverInfo = function () {
             }
             console.log("****************** End Drive Info ******************".green);
         });
-    });
+    }
+    callDriver(dInfo);
 };
 
 /**
  * Upload file.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- * @param filePath file path
+ * @param {String} filePath file path
+ * @param {String} folderId folder ID
+ * @param {String} title title file
+ * @param {function} callback
  */
 var uploadFile = function (filePath, folderId, title, callback) {
-    run(function(auth){
+    function dUpload(auth){
         var drive  = google.drive({version: 'v2', auth: auth});
         var mime   = require('mime-types');
         var params = {
@@ -168,10 +171,11 @@ var uploadFile = function (filePath, folderId, title, callback) {
                 callback(result.id);
             }
         });
-    });
+    }
+    callDriver(dUpload);
 };
 var deleteFile = function (fileId, callback) {
-    run(function(auth){
+    function remove(auth){
         var drive = google.drive({version: 'v2', auth: auth});
         drive.files.delete({
             fileId: fileId
@@ -187,10 +191,11 @@ var deleteFile = function (fileId, callback) {
                 callback();
             }
         });
-    });
+    }
+    callDriver(remove);
 };
 var emptyTrash = function (callback) {
-    run(function(auth){
+    function dEmptyTrash(auth){
         var drive = google.drive({version: 'v2', auth: auth});
         drive.files.emptyTrash({}, function (err) {
             if (err) {
@@ -201,7 +206,8 @@ var emptyTrash = function (callback) {
                 callback();
             }
         });
-    });
+    }
+    callDriver(dEmptyTrash);
 };
 
 /**
